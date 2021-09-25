@@ -18,8 +18,16 @@ async function cargarUsuarios(){
 
   console.log(usuarios);
 
-  let usuariosHtml = '<tr><td>123</td><td>Carlos Damian Benitez</td><td>damianbenitez8928@gmail.com</td><td>1141764794</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></tr>';
+    let listadoHtml = '';
 
-document.querySelector('#usuarios tbody').outerHTML= usuariosHtml;
+    for (let usuario of usuarios){
+
+          let usuariosHtml = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+' '+usuario.apellido+'</td><td>'+usuario.email+'</td><td>'+usuario.telefono+'</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></tr>';
+
+          listadoHtml += usuariosHtml;
+    }
+
+
+document.querySelector('#usuarios tbody').outerHTML= listadoHtml;
 
 }
