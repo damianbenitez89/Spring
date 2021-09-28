@@ -4,6 +4,6 @@ import com.example.demo.models.Usuario;
 
 import java.util.List;
 
-public interface usuarioDao {
+public interface UsuarioDao {
     List<Usuario> getUsuarios();
 }

@@ -4,17 +4,20 @@ $(document).ready(function() {
     cargarUsuarios();
   $('#usuarios').DataTable();
 });
+//
 
 async function cargarUsuarios(){
 
-  const request = await fetch('usuarios', {
+  const request = await fetch('usuarios', { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   });
-  const usuarios = await request.json();
+
+
+  const usuarios = await request.json(); // de la respuesta del fetch lo convierte en json y lo pone en la variable
 
   console.log(usuarios);
 
