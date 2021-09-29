@@ -1,15 +1,15 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
 
-    cargarUsuarios();
+    cargarUsuarios();// cuando carga la pagina llama al usuario
   $('#usuarios').DataTable();
 });
 //
 
 async function cargarUsuarios(){
 
-  const request = await fetch('usuarios', { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
-    method: 'GET',
+  const request = await fetch('api/usuarios', { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
+    method: 'GET', //metodo GET porque solicita
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -23,9 +23,12 @@ async function cargarUsuarios(){
 
     let listadoHtml = '';
 
-    for (let usuario of usuarios){
 
-          let usuariosHtml = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+' '+usuario.apellido+'</td><td>'+usuario.email+'</td><td>'+usuario.telefono+'</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></tr>';
+
+    for (let usuario of usuarios){
+          let botonEliminar ='<a href="#" onclick="eliminarUsuario('+usuario.id+')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a>';
+
+          let usuariosHtml = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+' '+usuario.apellido+'</td><td>'+usuario.email+'</td><td>'+usuario.telefono+'</td><td>'+botonEliminar+'</td></tr>';
 
           listadoHtml += usuariosHtml;
     }
@@ -34,3 +37,18 @@ async function cargarUsuarios(){
 document.querySelector('#usuarios tbody').outerHTML= listadoHtml;
 
 }
+
+async function eliminarUsuario(id){ //esta funcion la voy a meter en onclick en el boton
+    if(confirm ('¿Desea eliminar este usuario?')){
+         const request = await fetch('api/usuarios/'+id, { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
+                method: 'DELETE',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              });
+    }
+
+    location.reload()
+
+};

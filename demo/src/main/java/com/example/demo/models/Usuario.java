@@ -3,10 +3,7 @@ package com.example.demo.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="usuarios")
@@ -28,6 +25,7 @@ public class Usuario {
     private String password;
 
     @Getter @Setter @Column(name= "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)//este nos permirte que se auto complete el ID en la base de datos a la hora de registrar
     @Id
     private Long id;
 
