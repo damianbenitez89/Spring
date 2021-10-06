@@ -40,7 +40,7 @@ public class usuarioDaoImp implements UsuarioDao { // clases que te implemente m
     }
 
     @Override
-    public boolean verificarCredenciales(Usuario usuario) {
+    public Usuario obtenerUsuarioPorCredenciales(Usuario usuario) {
         String query ="FROM Usuario WHERE email = :email";
         List<Usuario> lista = entityManager.createQuery(query)
                 .setParameter("email", usuario.getEmail())
@@ -48,15 +48,17 @@ public class usuarioDaoImp implements UsuarioDao { // clases que te implemente m
                 .getResultList();
 
         if(lista.isEmpty()){//si la lista esta vacia retornar falso
-            return false;
+            return null;
         }
 
         String passwoerdHasheada = lista.get(0).getPassword(); // con esta linea obntengo las pass de la base de datos del email solicitido;
 
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);//creo una variable de tipo argon2 para poder usar sus funciones y verificar
-        return argon2.verify(passwoerdHasheada,usuario.getPassword());//comparo la pass que tipearon con la pass hasheada de la base de datos
+        if(argon2.verify(passwoerdHasheada,usuario.getPassword())){
+            return lista.get(0);
+        };//comparo la pass que tipearon con la pass hasheada de la base de datos
 
-
+        return null;
 
 
     }

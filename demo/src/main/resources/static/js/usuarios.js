@@ -10,10 +10,7 @@ async function cargarUsuarios(){
 
   const request = await fetch('api/usuarios', { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
     method: 'GET', //metodo GET porque solicita
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
+    headers:getHeaders()
   });
 
 
@@ -38,14 +35,22 @@ document.querySelector('#usuarios tbody').outerHTML= listadoHtml;
 
 }
 
+function getHeaders(){
+
+return {
+                         'Accept': 'application/json',
+                         'Content-Type': 'application/json',
+                         'Authorization': localStorage.token
+
+
+                       }
+}
+
 async function eliminarUsuario(id){ //esta funcion la voy a meter en onclick en el boton
     if(confirm ('¿Desea eliminar este usuario?')){
          const request = await fetch('api/usuarios/'+id, { // LO QUE HAGO ACA ES LLAMAR AL listado DE LOS CONTROLADORES "UsuarioController" es como un link que genero el controlador
                 method: 'DELETE',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                }
+                headers: getHeaders()
               });
     }
 

@@ -4,6 +4,7 @@ import com.example.demo.dao.UsuarioDao;
 import com.example.demo.models.Usuario;
 
 
+import com.example.demo.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class UsuarioController {
     @Autowired // hace que UsuarioDaoImplemente cree un objeto y la guarde en la variable usario Dao
     private UsuarioDao usuarioDao;
 
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.GET) // metodo HET para traer  un usuario
     public Usuario getUsuario(@PathVariable long id){
         Usuario usuario = new Usuario();
@@ -35,7 +40,13 @@ public class UsuarioController {
 
 
     @RequestMapping(value = "api/usuarios", method = RequestMethod.GET)// INDICA EN LA URL DEL CONTENIDO EN ESTE CASO LOCALHOST:8080/USUARIOS
-    public List<Usuario> getUsuarios(){
+    public List<Usuario> getUsuarios(@RequestHeader(value="Authorization") String token){ // como parametro le vamos a pasar la autorizacion y lo vamos poner en una variable token
+
+        String usuarioId = jwtUtil.getKey(token);
+                if(usuarioId==null){
+                    return new ArrayList<>();
+                }
+
         return usuarioDao.getUsuarios();
 
     }
